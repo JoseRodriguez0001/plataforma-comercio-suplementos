@@ -1,0 +1,12 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+# Dependencias autorizadas a ejecutar scripts de build (pnpm los bloquea por
+# defecto). Son binarios/compiladores que Medusa necesita.
+allowBuilds:
+  "@medusajs/telemetry": true
+  "@swc/core": true
+  esbuild: true
+  msgpackr-extract: true
+  protobufjs: true

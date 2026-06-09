@@ -1,0 +1,17 @@
+{
+  "name": "plataforma-suplementos",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tienda online de suplementos (Panamá) — monorepo Medusa v2 + Next.js",
+  "packageManager": "pnpm@11.5.2",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:logs": "docker compose logs -f",
+    "dev:backend": "pnpm --filter backend dev",
+    "dev:storefront": "pnpm --filter storefront dev"
+  }
+}
