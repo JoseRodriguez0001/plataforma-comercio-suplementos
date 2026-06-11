@@ -51,6 +51,9 @@ module.exports = defineConfig({
       resolve: "./src/modules/payment-audit",
     },
     {
+      resolve: "./src/modules/fulfillment-ext",
+    },
+    {
       resolve: "@medusajs/medusa/file",
       options: {
         providers: [fileProvider],
