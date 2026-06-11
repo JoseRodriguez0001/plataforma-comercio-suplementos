@@ -53,5 +53,18 @@ module.exports = defineConfig({
         providers: [fileProvider],
       },
     },
+    {
+      resolve: "@medusajs/medusa/payment",
+      options: {
+        providers: [
+          // Proveedor de prueba para desarrollar el checkout sin credenciales.
+          // Yappy y PagueloFacil se agregarán como proveedores adicionales.
+          {
+            resolve: "./src/modules/payment-mock",
+            id: "mock",
+          },
+        ],
+      },
+    },
   ],
 })
