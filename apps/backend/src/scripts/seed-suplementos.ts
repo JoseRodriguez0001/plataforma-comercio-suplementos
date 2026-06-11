@@ -31,10 +31,13 @@ export default async function seedSuplementos({ container }: ExecArgs) {
     entity: "stock_location",
     fields: ["id"],
   })
-  const { data: [region] } = await query.graph({
+  const { data: regions } = await query.graph({
     entity: "region",
-    fields: ["id", "currency_code"],
+    fields: ["id", "currency_code", "name"],
   })
+  // Preferir la región USD (Panamá); si no existe aún, usar la primera.
+  const region =
+    regions.find((r: any) => r.currency_code === "usd") ?? regions[0]
 
   if (!salesChannel || !shippingProfile || !region) {
     logger.error("Faltan datos base (sales channel / shipping profile / region). Corre primero las migraciones/seed inicial.")
