@@ -1,0 +1,62 @@
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
+import { FULFILLMENT_EXT_MODULE } from "../../../../../modules/fulfillment-ext"
+import FulfillmentExtModuleService from "../../../../../modules/fulfillment-ext/service"
+
+// GET /admin/orders/:id/fulfillment-detail
+export async function GET(req: MedusaRequest, res: MedusaResponse) {
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+  const { id } = req.params
+  const {
+    data: [order],
+  } = await query.graph({
+    entity: "order",
+    fields: ["id", "fulfillment_detail.*"],
+    filters: { id },
+  })
+  res.json({ fulfillment_detail: (order as any)?.fulfillment_detail ?? null })
+}
+
+// POST /admin/orders/:id/fulfillment-detail → crea/actualiza datos de cumplimiento
+export async function POST(req: MedusaRequest, res: MedusaResponse) {
+  const { id } = req.params
+  const svc: FulfillmentExtModuleService = req.scope.resolve(FULFILLMENT_EXT_MODULE)
+  const link = req.scope.resolve(ContainerRegistrationKeys.LINK)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+
+  const body = (req.body as any) ?? {}
+  const data = {
+    method: body.method === "pickup" ? "pickup" : "shipping",
+    carrier_id: body.carrier_id || null,
+    tracking_number: body.tracking_number || null,
+    shipped_at: body.shipped_at || null,
+    estimated_delivery_at: body.estimated_delivery_at || null,
+    delivery_note: body.delivery_note || null,
+    ready_for_pickup_at: body.ready_for_pickup_at || null,
+    picked_up_at: body.picked_up_at || null,
+  }
+
+  const {
+    data: [order],
+  } = await query.graph({
+    entity: "order",
+    fields: ["id", "fulfillment_detail.id"],
+    filters: { id },
+  })
+
+  let detail
+  if ((order as any)?.fulfillment_detail?.id) {
+    detail = await (svc as any).updateFulfillmentDetails({
+      id: (order as any).fulfillment_detail.id,
+      ...data,
+    })
+  } else {
+    detail = await (svc as any).createFulfillmentDetails(data)
+    await link.create({
+      [Modules.ORDER]: { order_id: id },
+      [FULFILLMENT_EXT_MODULE]: { fulfillment_detail_id: detail.id },
+    })
+  }
+
+  res.json({ fulfillment_detail: detail })
+}

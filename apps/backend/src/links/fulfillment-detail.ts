@@ -1,9 +1,10 @@
 import { defineLink } from "@medusajs/framework/utils"
-import FulfillmentModule from "@medusajs/medusa/fulfillment"
+import OrderModule from "@medusajs/medusa/order"
 import FulfillmentExtModule from "../modules/fulfillment-ext"
 
-// Fulfillment 1—1 FulfillmentDetail: datos de cumplimiento manual del envío/retiro.
+// Order 1—1 FulfillmentDetail: datos de cumplimiento manual (envío/retiro) de la orden.
+// (Se enlaza a Order, no a Fulfillment, por simplicidad del MVP: una entrega por orden.)
 export default defineLink(
-  FulfillmentModule.linkable.fulfillment,
+  OrderModule.linkable.order,
   FulfillmentExtModule.linkable.fulfillmentDetail
 )
