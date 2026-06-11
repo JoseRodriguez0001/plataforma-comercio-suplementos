@@ -58,10 +58,29 @@ module.exports = defineConfig({
       options: {
         providers: [
           // Proveedor de prueba para desarrollar el checkout sin credenciales.
-          // Yappy y PagueloFacil se agregarán como proveedores adicionales.
           {
             resolve: "./src/modules/payment-mock",
             id: "mock",
+          },
+          // Yappy (Botón de Pago, Banco General). Credenciales por env.
+          {
+            resolve: "./src/modules/payment-yappy",
+            id: "yappy",
+            options: {
+              merchant_id: process.env.YAPPY_MERCHANT_ID,
+              secret: process.env.YAPPY_SECRET,
+              mode: process.env.PAYMENT_MODE || "sandbox",
+            },
+          },
+          // PagueloFacil (tarjetas / Sistema Clave). Credenciales por env.
+          {
+            resolve: "./src/modules/payment-paguelofacil",
+            id: "paguelofacil",
+            options: {
+              cclw: process.env.PAGUELOFACIL_CCLW,
+              api_key: process.env.PAGUELOFACIL_API_KEY,
+              mode: process.env.PAYMENT_MODE || "sandbox",
+            },
           },
         ],
       },
