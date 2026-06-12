@@ -29,6 +29,25 @@ const fileProvider = useR2
       id: "local",
     }
 
+// Auth: email/contraseña siempre; Google solo si hay credenciales (env).
+// Activar Google en producción = definir GOOGLE_CLIENT_ID/SECRET (sin tocar código).
+const authProviders: any[] = [
+  { resolve: "@medusajs/medusa/auth-emailpass", id: "emailpass" },
+]
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  authProviders.push({
+    resolve: "@medusajs/medusa/auth-google",
+    id: "google",
+    options: {
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackUrl:
+        process.env.GOOGLE_CALLBACK_URL ||
+        "http://localhost:9000/auth/customer/google/callback",
+    },
+  })
+}
+
 module.exports = defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
@@ -41,6 +60,12 @@ module.exports = defineConfig({
     }
   },
   modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      options: {
+        providers: authProviders,
+      },
+    },
     {
       resolve: "./src/modules/supplement",
     },

@@ -9,7 +9,7 @@ build/
 .medusa/
 .cache/
 
-# Entorno / secretos (NUNCA versionar)
+# Entorno / secretos
 .env
 .env.local
 .env.*.local

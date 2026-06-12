@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(NODE_OPTIONS=--max-old-space-size=4096 npx medusa db:generate fulfillment_ext)",
+      "Bash(NODE_OPTIONS=--max-old-space-size=4096 npx medusa db:migrate)",
+      "Bash(NODE_OPTIONS=--max-old-space-size=4096 npx medusa exec src/scripts/verify-fulfillment-ext.ts)"
+    ]
+  }
+}
