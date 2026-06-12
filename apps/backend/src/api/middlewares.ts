@@ -12,5 +12,10 @@ export default defineMiddlewares({
       method: ["DELETE"],
       middlewares: [authenticate("customer", ["bearer", "session"])],
     },
+    {
+      matcher: "/store/carts/merge",
+      method: ["POST"],
+      middlewares: [authenticate("customer", ["bearer", "session"])],
+    },
   ],
 })
