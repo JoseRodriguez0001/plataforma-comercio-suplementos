@@ -48,6 +48,25 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   })
 }
 
+// Notificaciones: en dev (sin RESEND_API_KEY) el proveedor local registra los
+// emails en consola; en producción, Resend envía los emails reales.
+const notificationProviders: any[] = process.env.RESEND_API_KEY
+  ? [
+      { resolve: "@medusajs/medusa/notification-local", id: "local", options: { channels: ["feed"] } },
+      {
+        resolve: "./src/modules/notification-resend",
+        id: "resend",
+        options: {
+          channels: ["email"],
+          apiKey: process.env.RESEND_API_KEY,
+          from: process.env.RESEND_FROM_EMAIL,
+        },
+      },
+    ]
+  : [
+      { resolve: "@medusajs/medusa/notification-local", id: "local", options: { channels: ["feed", "email"] } },
+    ]
+
 module.exports = defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
@@ -64,6 +83,12 @@ module.exports = defineConfig({
       resolve: "@medusajs/medusa/auth",
       options: {
         providers: authProviders,
+      },
+    },
+    {
+      resolve: "@medusajs/medusa/notification",
+      options: {
+        providers: notificationProviders,
       },
     },
     {
