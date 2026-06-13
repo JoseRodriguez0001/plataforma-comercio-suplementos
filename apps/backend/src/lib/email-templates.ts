@@ -52,6 +52,52 @@ export function orderCanceledEmail(order: any) {
   }
 }
 
+export function welcomeEmail(customer: any) {
+  const name = customer?.first_name ? `, ${customer.first_name}` : ""
+  return {
+    subject: `¡Bienvenido a ${STORE}!`,
+    html: layout(
+      `¡Bienvenido${name}!`,
+      `<p>Tu cuenta fue creada con éxito. Ya puedes ver tu historial de pedidos y comprar más rápido.</p>`
+    ),
+  }
+}
+
+export function passwordResetEmail(opts: { url: string }) {
+  return {
+    subject: "Restablece tu contraseña",
+    html: layout(
+      "Restablecer contraseña",
+      `<p>Recibimos una solicitud para restablecer tu contraseña. Haz clic en el botón (válido por tiempo limitado):</p>
+       <p style="margin:20px 0"><a href="${opts.url}" style="background:#0f766e;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none">Restablecer contraseña</a></p>
+       <p>Si no fuiste tú, ignora este correo.</p>`
+    ),
+  }
+}
+
+export function orderShippedEmail(order: any, detail: any) {
+  const tracking = detail?.tracking_number
+    ? `<p>Número de guía: <strong>${detail.tracking_number}</strong></p>`
+    : ""
+  return {
+    subject: `Tu pedido #${order.display_id} fue enviado`,
+    html: layout(
+      "Pedido enviado",
+      `<p>Tu pedido <strong>#${order.display_id}</strong> ya va en camino.</p>${tracking}<p>¡Gracias por tu compra!</p>`
+    ),
+  }
+}
+
+export function orderReadyForPickupEmail(order: any) {
+  return {
+    subject: `Tu pedido #${order.display_id} está listo para retiro`,
+    html: layout(
+      "Listo para retiro",
+      `<p>Tu pedido <strong>#${order.display_id}</strong> está listo para que lo retires en el local. Te esperamos.</p>`
+    ),
+  }
+}
+
 export function lowStockOwnerEmail(rows: { name: string; available: number; threshold: number }[]) {
   const list = rows
     .map((r) => `<li>${r.name} — disponible ${r.available} (umbral ${r.threshold})</li>`)

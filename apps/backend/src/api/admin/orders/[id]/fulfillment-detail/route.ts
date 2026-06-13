@@ -2,6 +2,7 @@ import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import { FULFILLMENT_EXT_MODULE } from "../../../../../modules/fulfillment-ext"
 import FulfillmentExtModuleService from "../../../../../modules/fulfillment-ext/service"
+import { orderShippedEmail, orderReadyForPickupEmail } from "../../../../../lib/email-templates"
 
 // GET /admin/orders/:id/fulfillment-detail
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
@@ -40,22 +41,51 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     data: [order],
   } = await query.graph({
     entity: "order",
-    fields: ["id", "fulfillment_detail.id"],
+    fields: [
+      "id",
+      "email",
+      "display_id",
+      "fulfillment_detail.id",
+      "fulfillment_detail.shipped_at",
+      "fulfillment_detail.ready_for_pickup_at",
+    ],
     filters: { id },
   })
 
+  const prev = (order as any)?.fulfillment_detail
+
   let detail
-  if ((order as any)?.fulfillment_detail?.id) {
-    detail = await (svc as any).updateFulfillmentDetails({
-      id: (order as any).fulfillment_detail.id,
-      ...data,
-    })
+  if (prev?.id) {
+    detail = await (svc as any).updateFulfillmentDetails({ id: prev.id, ...data })
   } else {
     detail = await (svc as any).createFulfillmentDetails(data)
     await link.create({
       [Modules.ORDER]: { order_id: id },
       [FULFILLMENT_EXT_MODULE]: { fulfillment_detail_id: detail.id },
     })
+  }
+
+  // Emails al cliente en transiciones (solo la primera vez que se setea la fecha).
+  const email = (order as any)?.email
+  if (email) {
+    const notif: any = req.scope.resolve(Modules.NOTIFICATION)
+    const justShipped = data.method === "shipping" && !prev?.shipped_at && data.shipped_at
+    const justReady = data.method === "pickup" && !prev?.ready_for_pickup_at && data.ready_for_pickup_at
+    if (justShipped) {
+      await notif.createNotifications({
+        to: email,
+        channel: "email",
+        template: "order-shipped",
+        content: orderShippedEmail(order, detail),
+      })
+    } else if (justReady) {
+      await notif.createNotifications({
+        to: email,
+        channel: "email",
+        template: "order-ready-pickup",
+        content: orderReadyForPickupEmail(order),
+      })
+    }
   }
 
   res.json({ fulfillment_detail: detail })
