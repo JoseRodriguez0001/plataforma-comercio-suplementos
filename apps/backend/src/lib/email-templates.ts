@@ -98,6 +98,18 @@ export function orderReadyForPickupEmail(order: any) {
   }
 }
 
+export function orderTransferEmail(opts: { display_id: number | string; url: string }) {
+  return {
+    subject: `Confirma que el pedido #${opts.display_id} es tuyo`,
+    html: layout(
+      "Reclamar pedido",
+      `<p>Solicitaste vincular el pedido <strong>#${opts.display_id}</strong> (hecho como invitado) a tu cuenta. Confirma para que aparezca en tu historial:</p>
+       <p style="margin:20px 0"><a href="${opts.url}" style="background:#0f766e;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none">Confirmar y vincular</a></p>
+       <p>Si no fuiste tú, ignora este correo.</p>`
+    ),
+  }
+}
+
 export function lowStockOwnerEmail(rows: { name: string; available: number; threshold: number }[]) {
   const list = rows
     .map((r) => `<li>${r.name} — disponible ${r.available} (umbral ${r.threshold})</li>`)
