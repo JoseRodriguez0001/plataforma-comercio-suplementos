@@ -17,6 +17,13 @@ export default async function passwordResetHandler({
   const base = process.env.STOREFRONT_URL || "http://localhost:8000"
   const url = `${base}/reset-password?token=${encodeURIComponent(token)}&email=${encodeURIComponent(email)}`
 
+  // En dev (sin Resend) el email no se envía de verdad: imprimimos el enlace
+  // en consola para poder probar el flujo de recuperación.
+  if (!process.env.RESEND_API_KEY) {
+    const logger: any = container.resolve("logger")
+    logger.info(`[password-reset] Enlace para ${email}: ${url}`)
+  }
+
   await notif.createNotifications({
     to: email,
     channel: "email",
