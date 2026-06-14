@@ -3,7 +3,15 @@
     "allow": [
       "Bash(NODE_OPTIONS=--max-old-space-size=4096 npx medusa db:generate fulfillment_ext)",
       "Bash(NODE_OPTIONS=--max-old-space-size=4096 npx medusa db:migrate)",
-      "Bash(NODE_OPTIONS=--max-old-space-size=4096 npx medusa exec src/scripts/verify-fulfillment-ext.ts)"
+      "Bash(NODE_OPTIONS=--max-old-space-size=4096 npx medusa exec src/scripts/verify-fulfillment-ext.ts)",
+      "Bash(NODE_OPTIONS=--max-old-space-size=4096 npx medusa exec src/scripts/verify-notifications.ts)",
+      "Bash(OWNER_EMAIL=owner@local.test NODE_OPTIONS=--max-old-space-size=4096 npx medusa exec src/scripts/verify-alerts.ts)",
+      "Bash(curl -s -X POST http://localhost:9000/auth/user/emailpass -H 'Content-Type: application/json' --data @/tmp/login.json)",
+      "Bash(git clone *)",
+      "Bash(NODE_OPTIONS=--max-old-space-size=4096 pnpm install)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\EQUIPO\\plataforma_suplementos\\apps\\storefront"
     ]
   }
 }

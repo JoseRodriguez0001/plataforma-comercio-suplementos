@@ -1,5 +1,6 @@
 import { ExecArgs } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
+import { deleteRegionsWorkflow } from "@medusajs/medusa/core-flows"
 
 /**
  * Limpia datos demo del starter que ensucian el storefront:
@@ -11,6 +12,17 @@ import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 export default async function cleanupStorefrontData({ container }: ExecArgs) {
   const query = container.resolve(ContainerRegistrationKeys.QUERY)
   const productModule: any = container.resolve(Modules.PRODUCT)
+
+  // 0. Eliminar la región demo "Europe" (dejamos solo Panamá en el selector)
+  const { data: regions } = await query.graph({
+    entity: "region",
+    fields: ["id", "name"],
+  })
+  const europe = (regions as any[]).find((r) => r.name === "Europe")
+  if (europe) {
+    await deleteRegionsWorkflow(container).run({ input: { ids: [europe.id] } })
+    console.log("✔ región demo 'Europe' eliminada")
+  }
 
   // 1. Categorías demo
   const demo = ["Shirts", "Sweatshirts", "Pants", "Merch"]

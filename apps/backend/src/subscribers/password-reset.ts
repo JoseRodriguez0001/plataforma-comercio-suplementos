@@ -15,7 +15,7 @@ export default async function passwordResetHandler({
   if (actor_type && actor_type !== "customer") return
 
   const base = process.env.STOREFRONT_URL || "http://localhost:8000"
-  const url = `${base}/account/reset-password?token=${encodeURIComponent(token)}&email=${encodeURIComponent(email)}`
+  const url = `${base}/reset-password?token=${encodeURIComponent(token)}&email=${encodeURIComponent(email)}`
 
   await notif.createNotifications({
     to: email,
