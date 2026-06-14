@@ -11,11 +11,24 @@ export const paymentInfoMap: Record<
   { title: string; icon: React.JSX.Element }
 > = {
   pp_stripe_stripe: {
-    title: "Credit card",
+    title: "Tarjeta de crédito",
     icon: <CreditCard />,
   },
   "pp_medusa-payments_default": {
-    title: "Credit card",
+    title: "Tarjeta de crédito",
+    icon: <CreditCard />,
+  },
+  // Proveedores de pago de NATURZEN (Panamá)
+  pp_mock_mock: {
+    title: "Pago de prueba",
+    icon: <CreditCard />,
+  },
+  pp_yappy_yappy: {
+    title: "Yappy",
+    icon: <CreditCard />,
+  },
+  pp_paguelofacil_paguelofacil: {
+    title: "Tarjeta de crédito / débito (PagueloFácil)",
     icon: <CreditCard />,
   },
   "pp_stripe-ideal_stripe": {
@@ -31,7 +44,7 @@ export const paymentInfoMap: Record<
     icon: <PayPal />,
   },
   pp_system_default: {
-    title: "Manual Payment",
+    title: "Pago manual",
     icon: <CreditCard />,
   },
   // Add more payment providers here
@@ -48,7 +61,11 @@ export const isPaypal = (providerId?: string) => {
   return providerId?.startsWith("pp_paypal")
 }
 export const isManual = (providerId?: string) => {
-  return providerId?.startsWith("pp_system_default")
+  // pp_system_default = pago manual nativo; pp_mock = proveedor de prueba propio.
+  return (
+    providerId?.startsWith("pp_system_default") ||
+    providerId?.startsWith("pp_mock")
+  )
 }
 
 // Add currencies that don't need to be divided by 100
