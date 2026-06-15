@@ -26,7 +26,7 @@ export default async function Footer() {
               por la ciencia.
             </p>
           </div>
-          <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
+          <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-4">
             {productCategories && productCategories?.length > 0 && (
               <div className="flex flex-col gap-y-2">
                 <span className="font-display text-sm font-semibold text-white">
@@ -127,6 +127,31 @@ export default async function Footer() {
                 <li>
                   <LocalizedClientLink href="/account" className="text-grey-40 hover:text-white">
                     Mi cuenta
+                  </LocalizedClientLink>
+                </li>
+              </ul>
+            </div>
+            <div className="flex flex-col gap-y-2">
+              <span className="font-display text-sm font-semibold text-white">Ayuda</span>
+              <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
+                <li>
+                  <LocalizedClientLink href="/customer-service" className="text-grey-40 hover:text-white">
+                    Atención al cliente
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink href="/contact" className="text-grey-40 hover:text-white">
+                    Contacto
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink href="/content/privacy-policy" className="text-grey-40 hover:text-white">
+                    Política de privacidad
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink href="/content/terms-of-use" className="text-grey-40 hover:text-white">
+                    Términos de uso
                   </LocalizedClientLink>
                 </li>
               </ul>
