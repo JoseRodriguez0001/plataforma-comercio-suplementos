@@ -2,7 +2,8 @@ import { ReactNode } from "react"
 import { getSupplement } from "@lib/data/supplement"
 
 const Flag = ({ children }: { children: ReactNode }) => (
-  <span className="inline-block rounded-full border border-ui-border-base px-2 py-0.5 text-xs text-ui-fg-subtle">
+  <span className="inline-flex items-center gap-1 rounded-full bg-brand-100 px-3 py-1 text-xs font-medium text-brand-700">
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
     {children}
   </span>
 )
@@ -27,7 +28,7 @@ const SupplementInfo = async ({ productId }: { productId: string }) => {
 
   return (
     <div className="flex flex-col gap-y-4 border-t border-ui-border-base pt-6 text-small-regular">
-      <h3 className="text-base-semi">Información del suplemento</h3>
+      <h3 className="font-display text-base font-semibold text-ink">Información del suplemento</h3>
 
       {brand?.name && <Field label="Marca" value={brand.name} />}
 

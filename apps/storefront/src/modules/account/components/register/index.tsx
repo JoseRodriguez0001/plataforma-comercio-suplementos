@@ -21,10 +21,10 @@ const Register = ({ setCurrentView }: Props) => {
 
   return (
     <div
-      className="max-w-sm flex flex-col items-center"
+      className="w-full flex flex-col items-center"
       data-testid="register-page"
     >
-      <h1 className="text-large-semi uppercase mb-6">Crea tu cuenta en NATURZEN</h1>
+      <h1 className="heading-display text-2xl font-bold text-ink mb-2 text-center">Crea tu cuenta en NATURZEN</h1>
       <p className="text-center text-base-regular text-ui-fg-base mb-4">
         Regístrate para ver tu historial de pedidos, guardar direcciones y
         comprar más rápido.

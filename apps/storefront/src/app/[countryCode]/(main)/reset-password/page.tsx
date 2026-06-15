@@ -14,7 +14,7 @@ const ResetForm = () => {
 
   return (
     <div className="max-w-sm w-full flex flex-col items-center">
-      <h1 className="text-large-semi uppercase mb-6">Restablecer contraseña</h1>
+      <h1 className="heading-display text-2xl font-bold text-ink mb-6">Restablecer contraseña</h1>
 
       {state?.success ? (
         <>

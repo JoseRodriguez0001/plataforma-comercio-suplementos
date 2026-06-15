@@ -29,7 +29,7 @@ export default async function Nav() {
           <div className="flex items-center h-full">
             <LocalizedClientLink
               href="/"
-              className="txt-compact-xlarge-plus hover:text-ui-fg-base uppercase"
+              className="font-display text-xl font-bold uppercase tracking-tight text-brand-700 hover:text-brand-800"
               data-testid="nav-store-link"
             >
               NATURZEN

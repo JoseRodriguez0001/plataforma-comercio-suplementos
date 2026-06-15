@@ -14,8 +14,8 @@ const ForgotPassword = ({ setCurrentView }: Props) => {
   const [state, formAction] = useActionState(requestPasswordReset, null)
 
   return (
-    <div className="max-w-sm w-full flex flex-col items-center">
-      <h1 className="text-large-semi uppercase mb-6">Recuperar contraseña</h1>
+    <div className="w-full flex flex-col items-center">
+      <h1 className="heading-display text-2xl font-bold text-ink mb-4">Recuperar contraseña</h1>
 
       {state?.success ? (
         <p className="text-center text-base-regular text-ui-fg-base mb-6">

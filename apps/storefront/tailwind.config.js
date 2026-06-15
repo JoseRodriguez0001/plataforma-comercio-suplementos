@@ -34,6 +34,32 @@ module.exports = {
           80: "#1F2937",
           90: "#111827",
         },
+        // Marca NATURZEN (estética wellness, inspirada en VitalLife)
+        brand: {
+          50: "#EDF7F0",
+          100: "#D6EFDD",
+          200: "#AEDDBC",
+          300: "#7FC998",
+          400: "#54B56F",
+          500: "#2E9E4F",
+          600: "#258544",
+          700: "#1E6E39",
+          800: "#15622F",
+          900: "#0F4A24",
+        },
+        accent: {
+          100: "#FBEDD7",
+          200: "#F6DBAE",
+          300: "#F2C98A",
+          400: "#EDAC5C",
+          500: "#E8913B",
+          600: "#D67E28",
+        },
+        gold: {
+          500: "#E0A92B",
+        },
+        ink: "#1C2024",
+        footer: "#121212",
       },
       borderRadius: {
         none: "0px",
@@ -60,6 +86,7 @@ module.exports = {
       },
       fontFamily: {
         sans: [
+          "var(--font-inter)",
           "Inter",
           "-apple-system",
           "BlinkMacSystemFont",
@@ -67,6 +94,13 @@ module.exports = {
           "Roboto",
           "Helvetica Neue",
           "Ubuntu",
+          "sans-serif",
+        ],
+        display: [
+          "var(--font-poppins)",
+          "var(--font-inter)",
+          "Inter",
+          "-apple-system",
           "sans-serif",
         ],
       },
