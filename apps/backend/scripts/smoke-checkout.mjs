@@ -66,7 +66,7 @@ async function main() {
   await call("POST", `/store/carts/${cart0.id}`, {
     store: true,
     body: {
-      email: "cliente@test.pa",
+      email: process.env.SMOKE_EMAIL || "cliente@test.pa",
       shipping_address: {
         first_name: "Cliente", last_name: "Prueba", address_1: "Calle 50",
         city: "Ciudad de Panamá", country_code: "pa", phone: "60000000",
