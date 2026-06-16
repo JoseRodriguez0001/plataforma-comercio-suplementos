@@ -1,11 +1,40 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { searchProducts } from "../../../lib/search"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import { searchProducts, searchEnabled } from "../../../lib/search"
 
 // GET /store/search?q=...&brand=...&category=...&vegano=true&limit=&offset=
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const q = (req.query.q as string) ?? ""
   const limit = req.query.limit ? Number(req.query.limit) : 20
   const offset = req.query.offset ? Number(req.query.offset) : 0
+
+  // Sin Meilisearch (búsqueda diferida): fallback básico por título en la BD.
+  // Mantiene el buscador usable en producción aunque no se despliegue Meilisearch.
+  if (!searchEnabled()) {
+    const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+    const { data: products } = await query.graph({
+      entity: "product",
+      fields: ["id", "title", "handle", "thumbnail"],
+      filters: {
+        status: "published",
+        ...(q ? { title: { $ilike: `%${q}%` } } : {}),
+      },
+      pagination: { take: limit, skip: offset },
+    })
+
+    res.json({
+      hits: (products as any[]).map((p) => ({
+        id: p.id,
+        title: p.title,
+        handle: p.handle,
+        thumbnail: p.thumbnail ?? null,
+        brand: null,
+      })),
+      total: (products as any[]).length,
+      facets: {},
+    })
+    return
+  }
 
   const filter: string[] = ["status = published"]
   if (req.query.brand) filter.push(`brand_slug = "${req.query.brand}"`)
