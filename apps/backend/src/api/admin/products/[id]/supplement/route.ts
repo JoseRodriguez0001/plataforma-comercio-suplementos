@@ -42,12 +42,12 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
   let info
   if (existing?.supplement_info?.id) {
-    info = await supplement.updateSupplementInfos({
+    info = await supplement.updateSupplementInfoes({
       id: existing.supplement_info.id,
       ...infoData,
     })
   } else {
-    info = await supplement.createSupplementInfos(infoData)
+    info = await supplement.createSupplementInfoes(infoData)
     await link.create({
       [Modules.PRODUCT]: { product_id: id },
       [SUPPLEMENT_MODULE]: { supplement_info_id: info.id },

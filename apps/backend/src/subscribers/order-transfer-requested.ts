@@ -41,7 +41,7 @@ export default async function orderTransferRequestedHandler({
     to: order.email,
     channel: "email",
     template: "order-transfer",
-    content: orderTransferEmail({ display_id: order.display_id, url }),
+    content: orderTransferEmail({ display_id: order.display_id ?? order.id, url }),
   })
 }
 

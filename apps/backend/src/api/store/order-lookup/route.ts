@@ -37,7 +37,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       "shipping_address.*",
       "fulfillment_detail.*",
     ],
-    filters: { display_id: displayId },
+    filters: { display_id: displayId as any },
   })
 
   // No revelar si la orden existe cuando el email no coincide.

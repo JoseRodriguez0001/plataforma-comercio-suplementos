@@ -40,7 +40,7 @@ export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
     await compliance.deleteCustomerConsents(consents.map((c: any) => c.id))
   }
 
-  await deleteCustomersWorkflow(req.scope).run({ input: [customerId] })
+  await deleteCustomersWorkflow(req.scope).run({ input: { ids: [customerId] } })
 
   // Borrar también la identidad de autenticación para que no pueda volver a
   // iniciar sesión (baja real, Ley 81).
